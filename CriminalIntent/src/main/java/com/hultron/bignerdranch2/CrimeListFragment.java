@@ -2,13 +2,11 @@ package com.hultron.bignerdranch2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +27,7 @@ public class CrimeListFragment extends Fragment {
 
 
   @Override
-  public void onCreate(@Nullable Bundle savedInstanceState) {
+  public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setHasOptionsMenu(true);
     /*从argument中获取subtitle visible*/
@@ -42,9 +40,8 @@ public class CrimeListFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_crime_list,container,false);
     mRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
     updateUI();
-    return null;
+    return view;
   }
 
   @Override
@@ -64,6 +61,7 @@ public class CrimeListFragment extends Fragment {
   private void updateUI() {
     CrimeLab crimeLab = CrimeLab.get(getActivity());
     List<Crime> crimes = crimeLab.getCrimes();
+
     if (mAdapter == null) {
       mAdapter = new CrimeAdapter(crimes);
       mRecyclerView.setAdapter(mAdapter);
@@ -109,8 +107,6 @@ public class CrimeListFragment extends Fragment {
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     super.onCreateOptionsMenu(menu, inflater);
     inflater.inflate(R.menu.fragment_crime_list, menu);
-
-    Log.d("CrimeListFragment", " onCreateOptionsMenu: invalidated");
     MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
     if (mSubtitleVisible) {
       subtitleItem.setTitle(R.string.hide_subtitle);
@@ -148,6 +144,7 @@ public class CrimeListFragment extends Fragment {
     if (!mSubtitleVisible) {
       subtitle = null;
     }
+
     AppCompatActivity activity = (AppCompatActivity) getActivity();
     activity.getSupportActionBar().setSubtitle(subtitle);
   }

@@ -14,7 +14,8 @@ public class CrimeListActivity extends SingleFragmentActivity {
     return intent;
   }
 
-  @Override protected Fragment createFragment() {
+  @Override
+  protected Fragment createFragment() {
     boolean subtitleVisible = getIntent().getBooleanExtra(EXTRA_SUBTITLE_VISIBLE,false);
     return CrimeListFragment.newInstance(subtitleVisible);
   }

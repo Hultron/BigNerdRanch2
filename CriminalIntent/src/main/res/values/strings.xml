@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">CriminalIntent</string>
+  <string name="app_name">BigNerdRanch2</string>
   <string name="crime_title_hint">Enter a title for the crime.</string>
   <string name="crime_title_label">Title</string>
   <string name="crime_details_label">Details</string>
@@ -8,7 +8,7 @@
   <string name="new_crime">New Crime</string>
   <string name="show_subtitle">Show Subtitle</string>
   <string name="hide_subtitle">Hide Subtitle</string>
-  <string name="subtitle_format">%1$d crime</string>
+  <string name="subtitle_format">%1$d crimes</string>
   <string name="delete_crime">Delete Crime</string>
   <string name="no_crime_available">No Crime</string>
   <string name="create_crime_button">Create Crime</string>
