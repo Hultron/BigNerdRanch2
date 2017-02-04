@@ -24,8 +24,6 @@ public class CrimeListFragment extends Fragment {
   private boolean mSubtitleVisible;
   private static final String ARG_SUBTITLE_VISIBLE = "arg_subtitle_visible";
 
-
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

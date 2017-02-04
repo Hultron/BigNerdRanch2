@@ -52,6 +52,7 @@ public class CrimePagerActivity extends AppCompatActivity {
         Crime crime = mCrimes.get(position);
         return CrimeFragment.newInstance(crime.getId());
       }
+
       @Override
       public int getCount() {
         return mCrimes.size();
