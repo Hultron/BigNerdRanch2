@@ -24,6 +24,7 @@ public class CrimeListFragment extends Fragment {
   private boolean mSubtitleVisible;
   private static final String ARG_SUBTITLE_VISIBLE = "arg_subtitle_visible";
 
+  private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -32,15 +33,27 @@ public class CrimeListFragment extends Fragment {
     mSubtitleVisible = getArguments().getBoolean(ARG_SUBTITLE_VISIBLE);
   }
 
+
+  @Override public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible);
+  }
+
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.fragment_crime_list,container,false);
     mRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+    if (savedInstanceState != null) {
+      mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
+    }
+
     updateUI();
     return view;
   }
+
 
   @Override
   public void onResume() {

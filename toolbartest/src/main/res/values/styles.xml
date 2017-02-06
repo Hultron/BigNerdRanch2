@@ -1,0 +1,16 @@
+<resources>
+
+  <!-- Base application theme. -->
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="colorPrimary">#2e8abb</item>
+    <item name="colorPrimaryDark">#3a5fcd</item>
+    <item name="android:textColorSecondary">#ffffff</item>
+  </style>
+  <style name="ToolBarPopUpTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
+    <item name="android:colorBackground">#000000</item>
+    <item name="android:actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+  </style>
+  <style name="OverflowMenuStyle" parent="Widget.AppCompat.PopupMenu.Overflow">
+    <item name="overlapAnchor">false</item>
+  </style>
+</resources>
