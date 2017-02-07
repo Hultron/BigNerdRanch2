@@ -77,11 +77,13 @@ public class CrimeListFragment extends Fragment {
       mAdapter = new CrimeAdapter(crimes);
       mRecyclerView.setAdapter(mAdapter);
     } else {
-      mAdapter.notifyItemChanged(mItemUpdatedPosition);
+      //mAdapter.notifyItemChanged(mItemUpdatedPosition);
+      mAdapter.notifyItemRangeRemoved(mItemUpdatedPosition, 1);
       mItemUpdatedPosition = RecyclerView.NO_POSITION;
     }
     updateSubtitle();
   }
+
   private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     private Crime mCrime;
     private TextView mTitleTextView;
