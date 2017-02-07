@@ -23,7 +23,6 @@
   <string name="send_report">Send crime report via</string>
 
   <plurals name="sbutitle_plural">
-    <item quantity="zero">%1$d crime</item>
     <item quantity="one">%1$d crime</item>
     <item quantity="other">%1$d crimes</item>
   </plurals>
