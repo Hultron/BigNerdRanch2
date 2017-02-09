@@ -70,6 +70,15 @@ public class CrimeLab {
         mDatabase.insert(CrimeTable.NAME, null, values);
     }
 
+    //删
+    public void deleteCrime(Crime c) {
+        String uuidString = c.getId().toString();
+
+        mDatabase.delete(CrimeTable.NAME,
+                CrimeTable.Cols.UUID + " = ?",
+                new String[]{uuidString});
+    }
+
     //改
     public void updateCrime(Crime c) {
         String uuidString = c.getId().toString();
@@ -94,9 +103,6 @@ public class CrimeLab {
         return new CrimeCursorWrapper(cursor);
     }
 
-    public void removeCrime(UUID id) {
-
-    }
 
     private static ContentValues getContentValues(Crime crime) {
         ContentValues values = new ContentValues();
