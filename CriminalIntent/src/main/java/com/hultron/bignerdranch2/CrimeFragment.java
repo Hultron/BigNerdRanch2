@@ -254,8 +254,6 @@ public class CrimeFragment extends Fragment {
                     mCrime.setSuspect(suspect);
                     mCrime.setContactId(id);
                     mSuspectButton.setText(suspect);
-                    //enables the button and changes its text
-                    //updateDialSuspectButton();
                 } finally {
                     c.close();
                 }
