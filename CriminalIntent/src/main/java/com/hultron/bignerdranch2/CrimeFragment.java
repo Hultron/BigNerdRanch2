@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -237,6 +238,7 @@ public class CrimeFragment extends Fragment {
         }
 
         String dateFormat = "EEE,MMM dd";
+        Log.i("CrimeFragment", "getCrimeReport: " + mCrime);
         String dateString = DateFormat.format(dateFormat, mCrime.getDate()).toString();
 
         String suspect = mCrime.getSuspect();
