@@ -10,6 +10,15 @@ public class Crime {
     private Date mDate;
     private boolean mSolved;
     private String mSuspect;
+    private Long mContactId;
+
+    public Long getContactId() {
+        return mContactId;
+    }
+
+    public void setContactId(Long contactId) {
+        mContactId = contactId;
+    }
 
     public String getSuspect() {
         return mSuspect;
