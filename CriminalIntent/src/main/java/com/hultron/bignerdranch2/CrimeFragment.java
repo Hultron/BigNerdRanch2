@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,6 +40,8 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_TIME = 1;
     private static final int REQUEST_CONTACT = 2;
     private static final int REQUEST_PERMISSION = 3;
+
+    private static final String TAG = "CrimeFragment";
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -159,6 +162,7 @@ public class CrimeFragment extends Fragment {
                     }
                     cursor.moveToFirst();
                     String number = cursor.getString(0);
+                    Log.i(TAG, "onClick: " + number);
                     Uri phoneNumber = Uri.parse("tel:" + number);
                     Intent intent = new Intent(Intent.ACTION_DIAL, phoneNumber);
                     startActivity(intent);
@@ -191,6 +195,7 @@ public class CrimeFragment extends Fragment {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startActivityForResult(pickContact, REQUEST_CONTACT);
                 }
+                break;
         }
 
     }
@@ -199,6 +204,7 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        returnResult(mCrime.getId());
         CrimeLab.get(getActivity()).updateCrime(mCrime);
     }
 
@@ -250,7 +256,9 @@ public class CrimeFragment extends Fragment {
                     }
                     c.moveToFirst();
                     String suspect = c.getString(0);
+                    Log.i(TAG, "onActivityResult: " + suspect);
                     Long id = c.getLong(1);
+                    Log.i(TAG, "onActivityResult: " + id);
                     mCrime.setSuspect(suspect);
                     mCrime.setContactId(id);
                     mSuspectButton.setText(suspect);
@@ -278,11 +286,11 @@ public class CrimeFragment extends Fragment {
         return fragment;
     }
 
-//    public void returnResult(UUID crimeId) {
-//        Intent data = new Intent();
-//        data.putExtra(ARG_CRIME_ID, crimeId);
-//        getActivity().setResult(Activity.RESULT_OK, data);
-//    }
+    public void returnResult(UUID crimeId) {
+        Intent data = new Intent();
+        data.putExtra(ARG_CRIME_ID, crimeId);
+        getActivity().setResult(Activity.RESULT_OK, data);
+    }
 
     private String getCrimeReport() {
         String solvedString;
