@@ -18,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,6 +47,8 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_PERMISSION = 4;
 
 
+    private static final String TAG = "CrimeFragment";
+
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
@@ -57,6 +60,8 @@ public class CrimeFragment extends Fragment {
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
     private File mPhotoFile;
+
+    private boolean hasChoosedSuspect = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -152,15 +157,15 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-
         mDialButton = (Button) view.findViewById(R.id.crime_dial);
         mDialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Uri contentUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
                 String[] fields = {ContactsContract.CommonDataKinds.Phone.NUMBER};
-                String whereClause = ContactsContract.CommonDataKinds.Phone._ID + " = ?";
+                String whereClause = ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?";
                 String[] whereArgs = {Long.toString(mCrime.getContactId())};
+                Log.i(TAG, "onClick: " + mCrime.getContactId());
                 Cursor cursor = getActivity().getContentResolver()
                         .query(contentUri, fields, whereClause, whereArgs, null);
                 try {
@@ -169,6 +174,7 @@ public class CrimeFragment extends Fragment {
                     }
                     cursor.moveToFirst();
                     String number = cursor.getString(0);
+                    Log.i(TAG, "onClick: " + number);
                     Uri phoneNumber = Uri.parse("tel:" + number);
                     Intent intent = new Intent(Intent.ACTION_DIAL, phoneNumber);
                     startActivity(intent);
@@ -208,7 +214,6 @@ public class CrimeFragment extends Fragment {
         });
         mPhotoView = (ImageView) view.findViewById(R.id.crime_photo);
         updatePhotoView();
-
         return view;
     }
 
@@ -224,6 +229,13 @@ public class CrimeFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        returnResult(mCrime.getId());
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_PERMISSION:
@@ -232,16 +244,10 @@ public class CrimeFragment extends Fragment {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startActivityForResult(pickContact, REQUEST_CONTACT);
                 }
+                break;
         }
-
     }
 
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        CrimeLab.get(getActivity()).updateCrime(mCrime);
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -318,14 +324,14 @@ public class CrimeFragment extends Fragment {
         return fragment;
     }
 
-//    public void returnResult(UUID crimeId) {
-//        Intent data = new Intent();
-//        data.putExtra(ARG_CRIME_ID, crimeId);
-//        getActivity().setResult(Activity.RESULT_OK, data);
-//    }
+    public void returnResult(UUID crimeId) {
+        Intent data = new Intent();
+        data.putExtra(ARG_CRIME_ID, crimeId);
+        getActivity().setResult(Activity.RESULT_OK, data);
+    }
 
     private String getCrimeReport() {
-        String solvedString;
+        String solvedString = null;
         if (mCrime.isSolved()) {
             solvedString = getString(R.string.crime_report_solved);
         } else {
