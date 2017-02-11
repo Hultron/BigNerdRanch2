@@ -29,7 +29,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
-import java.util.Date;
 import java.util.UUID;
 
 public class CrimeFragment extends Fragment {
@@ -217,10 +216,6 @@ public class CrimeFragment extends Fragment {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        Date date = (Date) data
-                .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-        mCrime.setDate(date);
-
         switch (requestCode) {
             case REQUEST_DATE:
                 updateDate();
