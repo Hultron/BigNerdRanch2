@@ -293,6 +293,7 @@ public class CrimeFragment extends Fragment {
                     }
                     c.moveToFirst();
                     String suspect = c.getString(0);
+
                     Long id = c.getLong(1);
                     mCrime.setSuspect(suspect);
                     mCrime.setContactId(id);
