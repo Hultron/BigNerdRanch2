@@ -28,7 +28,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import java.util.Date;
 import java.util.UUID;
 
 public class CrimeFragment extends Fragment {
@@ -51,6 +50,8 @@ public class CrimeFragment extends Fragment {
     private Button mReportButton;
     private Button mSuspectButton;
     private Button mDialButton;
+
+    private boolean hasChoosedSuspect = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,15 +146,15 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-
         mDialButton = (Button) view.findViewById(R.id.crime_dial);
         mDialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Uri contentUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
                 String[] fields = {ContactsContract.CommonDataKinds.Phone.NUMBER};
-                String whereClause = ContactsContract.CommonDataKinds.Phone._ID + " = ?";
+                String whereClause = ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?";
                 String[] whereArgs = {Long.toString(mCrime.getContactId())};
+                Log.i(TAG, "onClick: " + mCrime.getContactId());
                 Cursor cursor = getActivity().getContentResolver()
                         .query(contentUri, fields, whereClause, whereArgs, null);
                 try {
@@ -183,7 +184,15 @@ public class CrimeFragment extends Fragment {
                 PackageManager.MATCH_DEFAULT_ONLY) == null) {
             mSuspectButton.setEnabled(false);
         }
+
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        returnResult(mCrime.getId());
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
     }
 
     @Override
@@ -199,13 +208,6 @@ public class CrimeFragment extends Fragment {
         }
     }
 
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        returnResult(mCrime.getId());
-        CrimeLab.get(getActivity()).updateCrime(mCrime);
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -230,9 +232,6 @@ public class CrimeFragment extends Fragment {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        Date date = (Date) data
-                .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
-        mCrime.setDate(date);
 
         switch (requestCode) {
             case REQUEST_DATE:
@@ -255,9 +254,7 @@ public class CrimeFragment extends Fragment {
                     }
                     c.moveToFirst();
                     String suspect = c.getString(0);
-                    Log.i(TAG, "onActivityResult: " + suspect);
                     Long id = c.getLong(1);
-                    Log.i(TAG, "onActivityResult: " + id);
                     mCrime.setSuspect(suspect);
                     mCrime.setContactId(id);
                     mSuspectButton.setText(suspect);
