@@ -197,7 +197,6 @@ public class CrimeFragment extends Fragment {
                 }
                 break;
         }
-
     }
 
 
@@ -293,7 +292,7 @@ public class CrimeFragment extends Fragment {
     }
 
     private String getCrimeReport() {
-        String solvedString;
+        String solvedString = null;
         if (mCrime.isSolved()) {
             solvedString = getString(R.string.crime_report_solved);
         } else {
