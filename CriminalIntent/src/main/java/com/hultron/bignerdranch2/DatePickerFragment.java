@@ -38,7 +38,7 @@ public class DatePickerFragment extends
     //时间保持不变，所以可以从mCalendar中直接获取
     int hour = mCalendar.get(Calendar.HOUR_OF_DAY);
     int minute = mCalendar.get(Calendar.MINUTE);
-    return new GregorianCalendar(year,month,day,hour,minute).getTime();
+    return new GregorianCalendar(year, month, day, hour, minute).getTime();
   }
 
 }
