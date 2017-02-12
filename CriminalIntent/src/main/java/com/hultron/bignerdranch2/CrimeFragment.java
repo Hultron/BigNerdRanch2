@@ -25,6 +25,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -175,7 +176,6 @@ public class CrimeFragment extends Fragment {
                     }
                     cursor.moveToFirst();
                     String number = cursor.getString(0);
-                    Log.i(TAG, "onClick: " + number);
                     Uri phoneNumber = Uri.parse("tel:" + number);
                     Intent intent = new Intent(Intent.ACTION_DIAL, phoneNumber);
                     startActivity(intent);
@@ -223,17 +223,27 @@ public class CrimeFragment extends Fragment {
                 new ImageDialog().show(fragmentManager, "ImageDialog");
             }
         });
-        updatePhotoView();
+        mPhotoView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                updatePhotoView(mPhotoView);
+            }
+        });
         return view;
     }
 
-    private void updatePhotoView() {
+    private void updatePhotoView(ImageView container) {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
             mPhotoView.setImageDrawable(null);
         } else {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(
-                    mPhotoFile.getPath(), getActivity()
-            );
+            Bitmap bitmap;
+            if (container == null) {
+                bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            }
+            else {
+                bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), container);
+            }
             mPhotoView.setImageBitmap(bitmap);
         }
     }
@@ -313,7 +323,7 @@ public class CrimeFragment extends Fragment {
                 }
                 break;
             case REQUEST_PHOTO:
-                updatePhotoView();
+                updatePhotoView(mPhotoView);
                 break;
         }
     }
