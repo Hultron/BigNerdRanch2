@@ -19,4 +19,9 @@ public class CrimeListActivity extends SingleFragmentActivity {
     boolean subtitleVisible = getIntent().getBooleanExtra(EXTRA_SUBTITLE_VISIBLE,false);
     return CrimeListFragment.newInstance(subtitleVisible);
   }
+
+  @Override
+  protected int getLayoutResId() {
+    return R.layout.activity_masterdetail;
+  }
 }

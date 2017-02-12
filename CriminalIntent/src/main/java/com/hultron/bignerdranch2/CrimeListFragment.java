@@ -35,7 +35,7 @@ public class CrimeListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    /*从argument中获取subtitle visible*/
+        /*从argument中获取subtitle visible*/
         mSubtitleVisible = getArguments().getBoolean(ARG_SUBTITLE_VISIBLE);
     }
 
