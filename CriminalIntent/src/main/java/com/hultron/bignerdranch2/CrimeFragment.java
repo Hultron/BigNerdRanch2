@@ -31,6 +31,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.UUID;
@@ -213,6 +214,15 @@ public class CrimeFragment extends Fragment {
             }
         });
         mPhotoView = (ImageView) view.findViewById(R.id.crime_photo);
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "View is clicked", Toast.LENGTH_LONG).show();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                ImageDialog.getImage(mPhotoFile.getPath(), getActivity());
+                new ImageDialog().show(fragmentManager, "ImageDialog");
+            }
+        });
         updatePhotoView();
         return view;
     }
