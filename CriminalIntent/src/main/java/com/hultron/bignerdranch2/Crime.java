@@ -10,6 +10,15 @@ public class Crime {
     private Date mDate;
     private boolean mSolved;
     private String mSuspect;
+    private Long mContactId;
+
+    public Long getContactId() {
+        return mContactId;
+    }
+
+    public void setContactId(Long contactId) {
+        mContactId = contactId;
+    }
 
     public String getSuspect() {
         return mSuspect;
@@ -54,5 +63,9 @@ public class Crime {
 
     public void setSolved(boolean solved) {
         mSolved = solved;
+    }
+
+    public String getPhotoFileName() {
+        return "IMG_" + getId().toString() + ".jpg";
     }
 }
