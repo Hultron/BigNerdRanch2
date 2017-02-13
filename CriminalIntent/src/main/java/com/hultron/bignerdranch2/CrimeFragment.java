@@ -9,8 +9,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
@@ -35,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.Date;
 import java.util.UUID;
 
 public class CrimeFragment extends Fragment {
@@ -48,10 +49,11 @@ public class CrimeFragment extends Fragment {
     private static final int REQUEST_PHOTO = 3;
     private static final int REQUEST_PERMISSION = 4;
 
-
     private static final String TAG = "CrimeFragment";
 
+//  新建一个Crime对象
     private Crime mCrime;
+
     private EditText mTitleField;
     private Button mDateButton;
     private Button mTimeButton;
@@ -63,7 +65,18 @@ public class CrimeFragment extends Fragment {
     private ImageView mPhotoView;
     private File mPhotoFile;
 
-    private boolean hasChoosedSuspect = false;
+    private Callbacks mCallbacks;
+
+    /*Required interface for hosting activities.*/
+    public interface Callbacks {
+        void onCrimeUpdated(Crime crime);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallbacks = (Callbacks) activity;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,6 +102,7 @@ public class CrimeFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 mCrime.setTitle(s.toString());
+                updateCrime();
             }
 
             @Override
@@ -128,6 +142,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mCrime.setSolved(isChecked);
+                updateCrime();
             }
         });
 
@@ -233,6 +248,19 @@ public class CrimeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        returnResult(mCrime.getId());
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
     private void updatePhotoView(ImageView container) {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
             mPhotoView.setImageDrawable(null);
@@ -246,13 +274,6 @@ public class CrimeFragment extends Fragment {
             }
             mPhotoView.setImageBitmap(bitmap);
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        returnResult(mCrime.getId());
-        CrimeLab.get(getActivity()).updateCrime(mCrime);
     }
 
     @Override
@@ -294,6 +315,10 @@ public class CrimeFragment extends Fragment {
         }
         switch (requestCode) {
             case REQUEST_DATE:
+                Date date = (Date) data
+                        .getSerializableExtra(PickerDialogFragment.EXTRA_DATE);
+                mCrime.setDate(date);
+                updateCrime();
                 updateDate();
                 break;
             case REQUEST_TIME:
@@ -317,12 +342,14 @@ public class CrimeFragment extends Fragment {
                     Long id = c.getLong(1);
                     mCrime.setSuspect(suspect);
                     mCrime.setContactId(id);
+                    updateCrime();
                     mSuspectButton.setText(suspect);
                 } finally {
                     c.close();
                 }
                 break;
             case REQUEST_PHOTO:
+                updateCrime();
                 updatePhotoView(mPhotoView);
                 break;
         }
@@ -374,6 +401,11 @@ public class CrimeFragment extends Fragment {
                 mCrime.getTitle(), dateString, solvedString, suspect);
 
         return report;
+    }
+
+    private void updateCrime() {
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+        mCallbacks.onCrimeUpdated(mCrime);
     }
 
 }
