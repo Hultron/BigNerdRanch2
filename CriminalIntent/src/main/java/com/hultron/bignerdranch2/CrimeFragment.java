@@ -315,13 +315,14 @@ public class CrimeFragment extends Fragment {
         }
         switch (requestCode) {
             case REQUEST_DATE:
-                Date date = (Date) data
-                        .getSerializableExtra(PickerDialogFragment.EXTRA_DATE);
+                Date date = (Date) data.getSerializableExtra(PickerDialogFragment.EXTRA_DATE);
                 mCrime.setDate(date);
                 updateCrime();
                 updateDate();
                 break;
             case REQUEST_TIME:
+                Date date1 = (Date) data.getSerializableExtra(PickerDialogFragment.EXTRA_DATE);
+                mCrime.setDate(date1);
                 updateTime();
                 break;
             case REQUEST_CONTACT:
