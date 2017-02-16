@@ -17,7 +17,6 @@ public class BeatBoxFragment extends Fragment {
     private static final String TAG = "BeatBoxFragment";
 
     private BeatBox mBeatBox;
-    private Sound mSound;
 
     public static BeatBoxFragment newInstance() {
         return new BeatBoxFragment();
@@ -53,10 +52,11 @@ public class BeatBoxFragment extends Fragment {
 
     private class SoundHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Button mButton;
+        private Sound mSound;
 
         public SoundHolder(View itemView) {
             super(itemView);
-            mButton = (Button) itemView;
+            mButton = (Button)itemView;
             mButton.setOnClickListener(this);
         }
 
