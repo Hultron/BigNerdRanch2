@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ public class BeatBoxFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mBeatBox = new BeatBox(getActivity());
     }
 
@@ -54,8 +54,10 @@ public class BeatBoxFragment extends Fragment {
         private Sound mSound;
 
         public SoundHolder(View itemView) {
+//            super(inflater.inflate(R.layout.list_item_sound, container, false));
+//            mButton = (Button) itemView.findViewById(R.id.list_item_sound_button);
             super(itemView);
-            mButton = (Button) itemView;
+            mButton = (Button) itemView.findViewById(R.id.list_item_sound_button);
             mButton.setOnClickListener(this);
         }
 
@@ -80,8 +82,8 @@ public class BeatBoxFragment extends Fragment {
         @Override
         public SoundHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
-            View view = inflater.inflate(R.layout.list_item_sound, parent, false);
-            return new SoundHolder(view);
+            View v = inflater.inflate(R.layout.list_item_sound, parent, false);
+            return new SoundHolder(v);
         }
 
         @Override
