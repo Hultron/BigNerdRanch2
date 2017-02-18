@@ -26,8 +26,9 @@ public class BeatBox {
 
     public BeatBox(Context context) {
         mAssetManager = context.getAssets();
+
         mSoundPool = new SoundPool(MAX_SOUNDS, AudioManager.STREAM_MUSIC, 0);
-        loadSounds();
+
     }
 
     public List<Sound> getSounds() {
@@ -53,7 +54,6 @@ public class BeatBox {
                 Log.e(TAG, "loadSounds: Could not load sound " + filename, e);
             }
         }
-
     }
 
     /*加载音频*/
