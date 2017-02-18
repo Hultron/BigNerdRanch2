@@ -1,0 +1,7 @@
+#Thu Feb 16 09:55:15 CST 2017
+base.0=D\:\\workspace\\BigNerdRanch2\\soundpooltest\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run-bootstrap_e1fe431d24707bc3ad3d4b5d9bf19caa68b416ea
+renamed.1=classes.dex
+renamed.0=classes2.dex
+file.1=D\:\\workspace\\BigNerdRanch2\\soundpooltest\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run_894f4c20f0b62a39655123b9f0f77b5f942a777b\\classes.dex
+base.1=D\:\\workspace\\BigNerdRanch2\\soundpooltest\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run_894f4c20f0b62a39655123b9f0f77b5f942a777b
+file.0=D\:\\workspace\\BigNerdRanch2\\soundpooltest\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run-bootstrap_e1fe431d24707bc3ad3d4b5d9bf19caa68b416ea\\classes.dex

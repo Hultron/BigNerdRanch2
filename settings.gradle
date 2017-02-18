@@ -1,1 +1,1 @@
-include ':CriminalIntent', ':toolbartest'
+include ':CriminalIntent', ':toolbartest', ':beatbox'
