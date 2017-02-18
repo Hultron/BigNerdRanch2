@@ -29,6 +29,8 @@ public class BeatBox {
 
         mSoundPool = new SoundPool(MAX_SOUNDS, AudioManager.STREAM_MUSIC, 0);
 
+        loadSounds();
+
     }
 
     public List<Sound> getSounds() {
