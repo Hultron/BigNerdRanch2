@@ -1,13 +1,12 @@
 package com.hultron.nerdlauncher;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
-public class NerdLauncherActivity extends AppCompatActivity {
+public class NerdLauncherActivity extends SingleFragmentActivity {
 
+    private static final String TAG = "NerdLauncherActivity";
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nerd_launcher);
+    protected Fragment createFragment() {
+        return NerdLauncherFragment.newInstance();
     }
 }
