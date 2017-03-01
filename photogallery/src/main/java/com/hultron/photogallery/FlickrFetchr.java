@@ -3,9 +3,9 @@ package com.hultron.photogallery;
 import android.net.Uri;
 import android.util.Log;
 
-import org.json.JSONArray;
+import com.google.gson.Gson;
+
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,6 +14,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import gson.Flickr;
+import gson.Photo;
 
 public class FlickrFetchr {
 
@@ -62,8 +65,8 @@ public class FlickrFetchr {
 
             String jsonString = getUrlString(url);
             Log.d(TAG, "Received JSON: " + jsonString);
-            JSONObject jsonBody = new JSONObject(jsonString);
-            parseItems(items, jsonBody);
+            //JSONObject jsonBody = new JSONObject(jsonString);
+            parseItems(items, jsonString);
         } catch (IOException e) {
             Log.e(TAG, "Failed to fetch items", e);
         } catch (JSONException e) {
@@ -72,26 +75,37 @@ public class FlickrFetchr {
         return items;
     }
 
-    private void parseItems(List<GalleryItem> items, JSONObject jsonBody) throws IOException,
+    private void parseItems(List<GalleryItem> items, String jsonBody) throws IOException,
             JSONException {
 
-
-        JSONObject photosJsonObject = jsonBody.getJSONObject("photos");
-        JSONArray photoJsonArray = photosJsonObject.getJSONArray("photo");
-
-        for (int i = 0; i < photoJsonArray.length(); i++) {
-            JSONObject photoJsonObject = photoJsonArray.getJSONObject(i);
-
+        Gson gson = new Gson();
+        Flickr flickr = gson.fromJson(jsonBody, Flickr.class);
+        for (Photo p : flickr.photos.photo) {
             GalleryItem item = new GalleryItem();
-            item.setId(photoJsonObject.getString("id"));
-            item.setCaption(photoJsonObject.getString("title"));
-
-            if (!photoJsonObject.has("url_s")) {
+            item.setId(p.id);
+            item.setCaption(p.title);
+            if (p.url_s == null) {
                 continue;
             }
-
-            item.setUrl(photoJsonObject.getString("url_s"));
+            item.setUrl(p.url_s);
             items.add(item);
         }
+
+//        JSONObject photosJsonObject = jsonBody.getJSONObject("photos");
+//        JSONArray photoJsonArray = photosJsonObject.getJSONArray("photo");
+
+//        for (int i = 0; i < photoJsonArray.length(); i++) {
+//            JSONObject photoJsonObject = photoJsonArray.getJSONObject(i);
+//            GalleryItem item = new GalleryItem();
+//            item.setId(photoJsonObject.getString("id"));
+//            item.setCaption(photoJsonObject.getString("title"));
+
+//            if (!photoJsonObject.has("url_s")) {
+//                continue;
+//            }
+
+//            item.setUrl(photoJsonObject.getString("url_s"));
+//            items.add(item);
+//        }
     }
 }
