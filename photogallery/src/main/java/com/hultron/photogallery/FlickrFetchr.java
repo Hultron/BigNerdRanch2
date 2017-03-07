@@ -111,6 +111,7 @@ public class FlickrFetchr {
                 continue;
             }
             item.setUrl(p.url_s);
+            item.setOwner(p.owner);
             items.add(item);
         }
 
